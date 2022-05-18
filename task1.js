@@ -13,30 +13,74 @@ a.b.c
 
 
 
-const o = {
-    one:'1',
-    two:'2'
-}
+// const o = {
+//     one:'1',
+//     two:'2',
+//     three:{
+//         four:'4'
+//     },
+//     five:{
+//         six:'6'
+//     }
+// }
 
-const key_array=['one']
-function copy(obj,arr) {
-    // if(!obj||!arr){
-    //     return 'no arguments'
-    // }
-    let temp = obj
-    let deep = arr[0].split('.')
-    for (let i=0;i<deep.length;i++){
-        if(temp[deep[i]]){
-            temp=temp[deep[i]]
+// const key_array=['three.four','five.six']
+// function copy(obj,arr) {
+//     let resultArr=[]
+//     // if(!obj||!arr){
+//     //     return 'no arguments'
+//     // }
+    
+//     arr.forEach( element => {
+//         let temp = obj
+//         let deep = element.split('.')
+//         for (let i=0;i<deep.length;i++){
+//             if(temp[deep[i]]){
+//                 temp=temp[deep[i]]
+//             }else{
+//                 return undefined
+//             }
+//             // console.log(deep[i])
+//             // console.log(obj[deep[i]])
+//         }
+    
+//         resultArr.push([element,temp])
+//     });
+
+//     return  resultArr
+//     // return  Object.fromEntries(resultArr)
+// }
+// copy(o,key_array)
+// console.log('original:',o)
+// console.log('original:',o.three.four)
+// console.log('copied:',copy(o,key_array))
+
+
+
+const arr = [ [ 'three.four', '4' ], [ 'five.six', '6' ] ]
+
+
+const res = arr.forEach(el=>{
+    let deep = el[0].split('.')
+    let val=el[1]
+    // console.log(deep)
+    let temp={}
+    for(let i=deep.length-1;i>=0;i--){
+        // console.log('d',deep[i])
+        // console.log('t.d',(temp[deep[i]]))
+        // console.log('t')
+        if(!temp[deep[i+1]]){
+            temp[deep[i]]=val
         }else{
-            return undefined
+            temp[deep[i]]= JSON.parse(JSON.stringify(temp))
+            delete temp[deep[i+1]]
+            console.log(temp)
         }
-        // console.log(deep[i])
-        // console.log(obj[deep[i]])
+        // console.log('-----------------');
     }
-    return temp
-}
-copy(o,key_array)
-console.log('original:',o)
-console.log('original:',o.one)
-console.log('copied:',copy(o,key_array))
+    // console.log(temp)
+    // return temp
+})
+
+// console.log(res)
+
